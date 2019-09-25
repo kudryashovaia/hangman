@@ -20,12 +20,19 @@ object Hangman extends App {
   def applyLetter(word: List[Char], currentResult: List[Char], letter: Char) = {
     var updatedResult: List[Char] = currentResult
     if (word.contains(letter)) {
+      var flagGuessed = false
       println("Hit!")
-      word.zipWithIndex.map { wordLetter =>
-        println( s"${wordLetter.toString()}")
-        if (wordLetter._1 == letter) updatedResult = currentResult.updated(wordLetter._2, letter)
-
+      updatedResult = word.zipWithIndex.map { wordLetter =>
+        if (wordLetter._1 == letter && updatedResult(wordLetter._2) == '*') letter
+        else if (wordLetter._1 == letter && updatedResult(wordLetter._2) == letter) {
+          flagGuessed = true
+          letter
+        }
+        else if (updatedResult(wordLetter._2) != '*') updatedResult(wordLetter._2)
+        else '*'
       }
+      if (flagGuessed)
+        println("You've guessed this letter before")
       println(s"The word: ${updatedResult.mkString("")}")
     } else {
       mistakeCount += 1
@@ -44,7 +51,7 @@ object Hangman extends App {
   while (mistakeCount < 5 && currentResult.contains('*'))  {
     println("Guess a letter:")
     val letter = readChar()
-    applyLetter(letter)
+    currentResult = applyLetter(word, currentResult, letter)
   }
 
   if (currentResult.contains('*')) println("You lost!")
