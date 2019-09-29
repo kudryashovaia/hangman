@@ -3,21 +3,35 @@ package model
 import scala.util.Random
 import scala.io.StdIn._
 
+trait Library {
+  var library = Array(
+    "vase",
+    "hot",
+    "desire",
+    "busy",
+    "borrow",
+    "charming",
+    "skate",
+    "impolite",
+    "whip",
+    "creepy"
+  )
+}
 
-object Hangman extends App {
+object Hangman extends App with Library {
 
-  def getWord() = {
-    val random = new Random
-    params.library(
-      random.nextInt(params.library.length)
+  def getWord(): List[Char]  = {
+    val random = new Random()
+    library(
+      random.nextInt(library.length)
     ).toList
   }
 
-  def getInitResult(word: List[Char]) = {
+  def getInitResult(word: List[Char]): List[Char] = {
     List.fill(word.length)('*')
   }
 
-  def applyLetter(word: List[Char], currentResult: List[Char], letter: Char) = {
+  def applyLetter(word: List[Char], currentResult: List[Char], letter: Char): List[Char] = {
     var updatedResult: List[Char] = currentResult
     if (word.contains(letter)) {
       var flagGuessed = false

@@ -3,7 +3,7 @@ package main
 import org.scalatest.words._
 import org.scalatest.Tag
 import org.scalatest._
-import model.Hangman
+import model.{Hangman, Library}
 
 import scala.util.Random
 
@@ -14,10 +14,9 @@ case class CaseId(id: Int) {
 }
 object TagRegress extends Tag("Regress")
 
-class HangmanSpec extends ShouldVerb with FlatSpecLike {
+class HangmanSpec extends ShouldVerb with FlatSpecLike with Library {
   CaseId(1) + "Word selector" should "check existing of selected word in library" taggedAs TagRegress in {
     val word = Hangman.getWord().mkString("")
-    val library = params.library
     assert(library.contains(word) ,"selected word is not in library")
   }
 
